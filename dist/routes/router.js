@@ -7,8 +7,21 @@ const express_1 = require("express");
 const server_1 = __importDefault(require("../classes/server"));
 const socket_1 = require("../sockets/socket");
 const grafica_1 = require("../classes/grafica");
+const encuesta_1 = require("../classes/encuesta");
 const router = (0, express_1.Router)();
 const grafica = new grafica_1.GraficaData();
+const encuesta = new encuesta_1.EncuestaData();
+router.get("/encuesta", (req, res) => {
+    res.json(encuesta.getDataEncuesta());
+});
+router.post("/encuesta", (req, res) => {
+    const opcion = Number(req.body.opcion);
+    const unidades = Number(req.body.unidades);
+    encuesta.incrementarValor(opcion, unidades);
+    const server = server_1.default.instance;
+    server.io.emit("cambio-encuesta", encuesta.getDataEncuesta());
+    res.json(encuesta.getDataEncuesta());
+});
 router.get("/grafica", (req, res) => {
     res.json(grafica.getDataGrafica());
 });
