@@ -55,6 +55,8 @@ class Server {
             socket.mensaje(cliente, this.io);
             // Desconectar
             socket.desconectar(cliente, this.io);
+            //Configuaracion de mapas
+            socket.mapaSockets(cliente, this.io);
         });
     }
     start(callback) {

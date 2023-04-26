@@ -46,6 +46,9 @@ export default class Server {
 
       // Desconectar
       socket.desconectar(cliente, this.io);
+
+      //Configuaracion de mapas
+      socket.mapaSockets(cliente, this.io);
     });
   }
 

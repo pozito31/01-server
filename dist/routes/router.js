@@ -11,6 +11,9 @@ const encuesta_1 = require("../classes/encuesta");
 const router = (0, express_1.Router)();
 const grafica = new grafica_1.GraficaData();
 const encuesta = new encuesta_1.EncuestaData();
+router.get("/mapa", (req, res) => {
+    res.json(socket_1.mapa.getMarcadores());
+});
 router.get("/encuesta", (req, res) => {
     res.json(encuesta.getDataEncuesta());
 });

@@ -1,9 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.obtenerUsuarios = exports.configurarUsuario = exports.mensaje = exports.desconectar = exports.conectarCliente = exports.usuariosConectados = void 0;
+exports.obtenerUsuarios = exports.configurarUsuario = exports.mensaje = exports.desconectar = exports.conectarCliente = exports.mapaSockets = exports.mapa = exports.usuariosConectados = void 0;
 const usuarios_lista_1 = require("../classes/usuarios-lista");
 const usuario_1 = require("../classes/usuario");
+const mapa_1 = require("../classes/mapa");
 exports.usuariosConectados = new usuarios_lista_1.UsuariosLista();
+exports.mapa = new mapa_1.Mapa();
+//Eventos de mapa
+const mapaSockets = (cliente, io) => {
+    cliente.on("marcador-nuevo", (marcador) => {
+        exports.mapa.agregarMarcador(marcador);
+        cliente.broadcast.emit("marcador-nuevo", marcador);
+    });
+    cliente.on("marcador-borrar", (id) => {
+        exports.mapa.borrarMarcador(id);
+        cliente.broadcast.emit("marcador-borrar", id);
+    });
+    cliente.on("marcador-mover", (marcador) => {
+        exports.mapa.moverMarcador(marcador);
+        cliente.broadcast.emit("marcador-mover", marcador);
+    });
+};
+exports.mapaSockets = mapaSockets;
 const conectarCliente = (cliente, io) => {
     const usuario = new usuario_1.Usuario(cliente.id);
     exports.usuariosConectados.agregar(usuario);
